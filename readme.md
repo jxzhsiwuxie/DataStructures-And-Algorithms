@@ -1,6 +1,6 @@
 # 数据结构、算法与应用 C++ 描述
 
-## [官网地址](https://www.cise.ufl.edu/~sahni/dsaac/)
+## [原书网站地址](https://www.cise.ufl.edu/~sahni/dsaac/)
 
 ## 环境
 
