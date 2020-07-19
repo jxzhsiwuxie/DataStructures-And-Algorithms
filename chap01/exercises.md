@@ -1386,18 +1386,25 @@ C++ 代码实现：
     #include <iostream>
     #include <bitset>
     #include <set>
+    #include <cstddef>
+    #include <ctime>
+    #include <iomanip>
 
-    using std::bitset;
+    using std::clock;
+    using std::clock_t;
     using std::cout;
     using std::endl;
+    using std::size_t;
+
+    using std::bitset;
     using std::set;
 
     /*
-    * @fullSet：元素个数为 N 的集合
-    * @nth    ：每一层递归函数中集合中元素的个数（最外层情况下，nth == N）
-    */
-    template <unsigned long long N>
-    void getSubset(bitset<N> &fullSet, unsigned long long nth)
+        * @fullSet：元素个数为 N 的集合
+        * @nth    ：每一层递归函数中集合中元素的个数（最外层情况下，nth == N）
+        */
+    template <size_t N>
+    void getSubset(bitset<N> &fullSet, size_t nth)
     {
         //此时待分解的集合只剩下空集，将整个集合打印出来
         if (nth == 0)
@@ -1420,15 +1427,13 @@ C++ 代码实现：
     }
 
     /*
-    * @fullSet  ：元素个数为 N 的集合
-    * @nth      ：每一层递归函数中集合中元素的个数（最外层情况下，nth == N）
-    * @container：用于存放排序后的子集的容器
-    */
-    template <unsigned long long N>
+        * @fullSet  ：元素个数为 N 的集合
+        * @nth      ：每一层递归函数中集合中元素的个数（最外层情况下，nth == N）
+        * @container：用于存放排序后的子集的容器
+        */
+    template <size_t N>
     void getSubset(
-            bitset<N> &fullSet, unsigned long long nth, set<bitset<N>,
-            bool (*)(const bitset<N> &, const bitset<N> &)> &container
-        )
+        bitset<N> &fullSet, size_t nth, set<bitset<N>, bool (*)(const bitset<N> &, const bitset<N> &)> &container)
     {
         //此时待分解的集合只剩下空集，将整个集合打印出来
         if (nth == 0)
@@ -1451,7 +1456,7 @@ C++ 代码实现：
     }
 
     //用于比较 bitset 的函数
-    template <unsigned long long N>
+    template <size_t N>
     bool bitsetCompare(const bitset<N> &b1, const bitset<N> &b2)
     {
         if (b1.count() < b2.count())
@@ -1462,7 +1467,7 @@ C++ 代码实现：
     }
 
     //将 bitset 数据转换为日常集合的形式
-    template <typename T, unsigned long long N>
+    template <typename T, size_t N>
     void convertBitset(const T (&tArr)[N], const bitset<N> &bSet)
     {
         if (bSet.none())
@@ -1482,13 +1487,13 @@ C++ 代码实现：
             {
                 if (bSet.test(i))
                 {
-                    if (++cnt < total)
-                        cout << tArr[i] << ", ";
-                    else
-                    {
-                        cout << tArr[i] << "}" << endl;
-                        break;
-                    }
+                        if (++cnt < total)
+                            cout << tArr[i] << ", ";
+                        else
+                        {
+                            cout << tArr[i] << "}" << endl;
+                            break;
+                        }
                 }
             }
         }
@@ -1496,7 +1501,10 @@ C++ 代码实现：
 
     int main()
     {
-        const unsigned long long N = 4;
+        clock_t start, end;
+        start = clock();
+
+        const size_t N = 4;
         bitset<N> iSet;
         set<bitset<N>, decltype(bitsetCompare<N>) *> setSet(bitsetCompare<N>);
 
@@ -1506,6 +1514,10 @@ C++ 代码实现：
 
         for (const auto s : setSet)
             convertBitset(cArr, s);
+
+        end = clock();
+        cout << std::setw(16) << std::setfill('-') << "" << endl;
+        cout << "用时：" << (end - start) << " 毫秒" << endl;
 
         return 0;
     }
