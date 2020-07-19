@@ -1387,11 +1387,14 @@ C++ 代码实现：
     #include <bitset>
     #include <set>
     #include <cstddef>
-    #include <ctime>
+    #include <chrono>
     #include <iomanip>
 
-    using std::clock;
-    using std::clock_t;
+    using std::chrono::duration;
+    using std::chrono::duration_cast;
+    using std::chrono::milliseconds;
+    using std::chrono::steady_clock;
+
     using std::cout;
     using std::endl;
     using std::size_t;
@@ -1501,23 +1504,26 @@ C++ 代码实现：
 
     int main()
     {
-        clock_t start, end;
-        start = clock();
 
-        const size_t N = 4;
+        steady_clock::time_point start, end;
+        duration<double> timeSpan;
+        start = steady_clock::now();
+
+        const size_t N = 10;
         bitset<N> iSet;
         set<bitset<N>, decltype(bitsetCompare<N>) *> setSet(bitsetCompare<N>);
 
-        const char cArr[N] = {'a', 'b', 'c', 'd'};
+        const char cArr[N] = {'a', 'b', 'c', 'd', 'f', 'g', 'h', 'i', 'j', 'k'};
 
         getSubset(iSet, N, setSet);
 
         for (const auto s : setSet)
             convertBitset(cArr, s);
 
-        end = clock();
+        end = steady_clock::now();
+        timeSpan = duration_cast<milliseconds>(end - start);
         cout << std::setw(16) << std::setfill('-') << "" << endl;
-        cout << "用时：" << (end - start) << " 毫秒" << endl;
+        cout << "用时：" << timeSpan.count() << " 毫秒" << endl;
 
         return 0;
     }
@@ -1553,12 +1559,14 @@ C++ 代码实现：
 
 ```c++
     #include <iostream>
-    #include <ctime>
+    #include <chrono>
 
-    using std::clock;
-    using std::clock_t;
     using std::cout;
     using std::endl;
+    using std::chrono::duration;
+    using std::chrono::duration_cast;
+    using std::chrono::milliseconds;
+    using std::chrono::steady_clock;
 
     void printBit(unsigned long long setInBit, unsigned num)
     {
@@ -1578,15 +1586,18 @@ C++ 代码实现：
 
     int main()
     {
-        const unsigned N = 2;
+        steady_clock::time_point start, end;
+        duration<double> timeSpan;
+        start = steady_clock::now();
 
-        clock_t start, end;
-        start = clock();
+        const unsigned N = 2;
 
         getSubset(N);
 
-        end = clock();
-        cout << "used time: " << (end - start) << "ms" << endl;
+        end = steady_clock::now();
+        timeSpan = duration_cast<milliseconds>(end - start);
+        cout << "----------------" << endl;
+        cout << "用时：" << timeSpan.count() << " 毫秒" << endl;
 
         return 0;
     }
@@ -1633,14 +1644,17 @@ $$
 
 ```c++
     #include <iostream>
-    #include <ctime>
+    #include <chrono>
     #include <cmath>
     #include <vector>
     #include <iterator>
     #include <algorithm>
 
-    using std::clock;
-    using std::clock_t;
+    using std::chrono::duration;
+    using std::chrono::duration_cast;
+    using std::chrono::milliseconds;
+    using std::chrono::steady_clock;
+
     using std::copy;
     using std::cout;
     using std::endl;
@@ -1649,10 +1663,10 @@ $$
     using std::vector;
 
     /*
-    * 将非负整数的二进制形式的指定位翻转（0、1 变换）
-    * number：非负整数
-    * i：第 i 个位置（从 1 开始）
-    */
+        * 将非负整数的二进制形式的指定位翻转（0、1 变换）
+        * number：非负整数
+        * i：第 i 个位置（从 1 开始）
+        */
     void flipBit(unsigned &number, unsigned i)
     {
         //获取第 i 个位置的值
@@ -1666,10 +1680,10 @@ $$
     }
 
     /*
-    * 将非负整数以二进制形式输出
-    * number：非负整数的数值
-    * n：二进制的位数
-    */
+        * 将非负整数以二进制形式输出
+        * number：非负整数的数值
+        * n：二进制的位数
+        */
     void intToBit(unsigned number, unsigned n)
     {
         for (unsigned i = n; i > 0; --i)
@@ -1680,10 +1694,10 @@ $$
     }
 
     /*
-    * 得到格雷码的代码位置变换序列
-    * container：存放变换位置的容器
-    * n：元素个数
-    */
+        * 得到格雷码的代码位置变换序列
+        * container：存放变换位置的容器
+        * n：元素个数
+        */
     void getGrayCodePos(vector<unsigned> &container, unsigned n)
     {
         if (n == 1)
@@ -1697,10 +1711,10 @@ $$
     }
 
     /*
-    * 将格雷码的位置变换序列转换为格雷码
-    * positions：位置变换序列
-    * n：元素个数
-    */
+        * 将格雷码的位置变换序列转换为格雷码
+        * positions：位置变换序列
+        * n：元素个数
+        */
     void convertToGrayCode(const vector<unsigned> &positions, unsigned n)
     {
         unsigned prev = 0;
@@ -1714,9 +1728,9 @@ $$
     }
 
     /*
-    * 将所有函数综合起来得到的获取 n 元素的格雷码的函数
-    * n：元素个数
-    */
+        * 将所有函数综合起来得到的获取 n 元素的格雷码的函数
+        * n：元素个数
+        */
 
     void g(unsigned n)
     {
@@ -1737,15 +1751,18 @@ $$
 
     int main()
     {
-        clock_t start, end;
-        start = clock();
+        steady_clock::time_point start, end;
+        duration<double> timeSpan;
+        start = steady_clock::now();
 
         g(3);
         cout << "-----------------------------------------" << endl;
         g(4);
 
-        end = clock();
-        cout << "used time: " << (end - start) << "ms" << endl;
+        end = steady_clock::now();
+        timeSpan = duration_cast<milliseconds>(end - start);
+        cout << "----------------" << endl;
+        cout << "用时：" << timeSpan.count() << " 毫秒" << endl;
 
         return 0;
     }
@@ -1759,12 +1776,15 @@ $$
 
 ```c++
     #include <iostream>
-    #include <ctime>
     #include <numeric>
     #include <cstddef>
+    #include <chrono>
 
-    using std::clock;
-    using std::clock_t;
+    using std::chrono::duration;
+    using std::chrono::duration_cast;
+    using std::chrono::milliseconds;
+    using std::chrono::steady_clock;
+
     using std::cout;
     using std::endl;
     using std::size_t;
@@ -1772,11 +1792,11 @@ $$
     using std::accumulate;
 
     /*
-    * 自定义 accumulate 函数
-    * start：指向首元素的指针
-    * end：指向尾后元素的指针
-    * initialvalue：初始值
-    */
+        * 自定义 accumulate 函数
+        * start：指向首元素的指针
+        * end：指向尾后元素的指针
+        * initialvalue：初始值
+        */
     template <typename T>
     T customAccumulate(T *start, const T *end, T initialValue)
     {
@@ -1789,8 +1809,9 @@ $$
 
     int main()
     {
-        clock_t start, end;
-        start = clock();
+        steady_clock::time_point start, end;
+        duration<double> timeSpan;
+        start = steady_clock::now();
 
         const size_t N = 9;
         int ia[N] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -1807,8 +1828,10 @@ $$
         cout << "自定义accumulate 模板函数得到的结果：" << customAccumulate(da, da + N, dInitialValue) << endl;
         cout << "-----------------------------------" << endl;
 
-        end = clock();
-        cout << "用时：" << (end - start) << " 毫秒" << endl;
+        end = steady_clock::now();
+        timeSpan = duration_cast<milliseconds>(end - start);
+        cout << "----------------" << endl;
+        cout << "用时：" << timeSpan.count() << " 毫秒" << endl;
         return 0;
     }
 ```
@@ -2690,13 +2713,16 @@ $${\rm mismatch(start1, end1, start2)}$$
 
 ```c++
     #include <iostream>
-    #include <ctime>
     #include <iomanip>
     #include <algorithm>
     #include <utility>
+    #include <chrono>
 
-    using std::clock;
-    using std::clock_t;
+    using std::chrono::duration;
+    using std::chrono::duration_cast;
+    using std::chrono::milliseconds;
+    using std::chrono::steady_clock;
+
     using std::cout;
     using std::endl;
     using std::pair;
@@ -2721,8 +2747,9 @@ $${\rm mismatch(start1, end1, start2)}$$
 
     int main()
     {
-        clock_t start, end;
-        start = clock();
+        steady_clock::time_point start, end;
+        duration<double> timeSpan;
+        start = steady_clock::now();
 
         int ia1[] = {1, 2, 3, 4, 5, 60};
         int ia2[] = {1, 2, 3, 4, 5, 60, 80, 3, 6, 8};
@@ -2752,9 +2779,10 @@ $${\rm mismatch(start1, end1, start2)}$$
         cout << "数组 cia2 与数组 cia3 第一个不相等的元素是："
             << (*cres23.first) << ", " << (*cres23.second) << endl;
 
-        end = clock();
-        cout << std::setw(16) << std::setfill('-') << "" << endl;
-        cout << "用时：" << (end - start) << " 毫秒" << endl;
+        end = steady_clock::now();
+        timeSpan = duration_cast<milliseconds>(end - start);
+        cout << "----------------" << endl;
+        cout << "用时：" << timeSpan.count() << " 毫秒" << endl;
         return 0;
     }
 ```
