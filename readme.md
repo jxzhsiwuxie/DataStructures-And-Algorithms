@@ -12,5 +12,5 @@
 ## 编译选项
 
 ```shell
-    g++ -O2 -fexec-charset=utf8 -o main test.cpp
+    g++ -O2 -o main test.cpp
 ```
